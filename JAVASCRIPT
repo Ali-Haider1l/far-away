@@ -1,0 +1,32 @@
+import GameScene from './scenes/GameScene.js';
+
+const config = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 600,
+  backgroundColor: '#1a1a1a',
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 500 },
+      debug: false
+    }
+  },
+  scene: [GameScene]
+};
+
+new Phaser.Game(config);
+
+// Wallet connect
+const walletBtn = document.getElementById('wallet');
+walletBtn.onclick = async () => {
+  if (window.ethereum) {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
+    walletBtn.innerText = Connected: ${address.substring(0, 6)}...;
+    window.playerWallet = address;
+  } else {
+    alert('MetaMask not detected!');
+  }
+};
